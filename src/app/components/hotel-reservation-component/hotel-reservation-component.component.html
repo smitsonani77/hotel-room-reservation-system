@@ -1,0 +1,52 @@
+<div class="container">
+    <h1>Hotel Room Reservation System</h1>
+
+    <form [formGroup]="bookingForm" class="booking-section">
+        <div>
+            <input type="number" formControlName="numberOfRooms" placeholder="Number of Rooms"
+                style="width: 125px; height: 18px;" />
+            <div *ngIf="bookingForm.get('numberOfRooms')?.touched && bookingForm.get('numberOfRooms')?.hasError"
+                class="error">
+                <small *ngIf="bookingForm.get('numberOfRooms')?.hasError('required')" class="text-red">
+                    Please enter a valid number
+                </small>
+                <small *ngIf="bookingForm.get('numberOfRooms')?.hasError('min')" class="text-red">
+                    Minimum 1 room can be booked at a time
+                </small>
+                <small *ngIf="bookingForm.get('numberOfRooms')?.hasError('max')" class="text-red">
+                    Maximum 5 rooms can be booked at a time
+                </small>
+            </div>
+        </div>
+        <div class="booking-buttons">
+            <button type="button" (click)="bookRooms()">Book Rooms</button>
+            <button type="button" (click)="resetBookings()">Reset Bookings</button>
+            <button type="button" (click)="generateRandomOccupancy()">Generate Random Occupancy</button>
+        </div>
+    </form>
+
+
+    <div *ngIf="lastBooking" class="booking-info">
+        <p>Booked Rooms: <span> {{ lastBooking.roomIds.join(', ') }} </span></p>
+        <p>Total Travel Time: {{ lastBooking.totalTravelTime }} minutes</p>
+    </div>
+
+    <div style="display: flex; gap:10px;">
+        <div style="width: 200px; border: 1px solid black;"></div>
+        <div class="hotel-floors">
+            <ng-container *ngFor="let floor of hotelService.getRoomsGroupedByFloor()">
+                <div class="floor">
+                    <ng-container *ngFor="let room of floor.rooms">
+                        <div class="room" [ngClass]="{
+                    'booked': room.isBooked,
+                    'available': !room.isBooked
+                  }">
+                            {{ room.id }}
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+</div>

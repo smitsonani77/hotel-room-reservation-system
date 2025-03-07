@@ -1,0 +1,58 @@
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.booking-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    .booking-buttons {
+        display: flex;
+        gap: 10px;
+        height: 24px;
+    }
+}
+
+.hotel-floors {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+}
+
+.floor {
+    display: flex;
+    gap: 10px;
+}
+
+.room {
+    width: 51px;
+    padding: 10px;
+    text-align: center;
+    background-color: green;
+    color: white;
+}
+
+.available {
+    background-color: green;
+    color: white;
+}
+
+.booked {
+    background-color: red;
+    color: white;
+}
+
+.floor-break {
+    width: 100%;
+    grid-column: 1 / -1;
+    height: 10px;
+    background-color: transparent;
+}
+
+.text-red {
+    color: red;
+}
