@@ -27,15 +27,21 @@ export class HotelService {
   }
 
   private calculateTotalTravelTime(rooms: Room[]): number {
+    console.log('rooms =>', rooms);
+
     if (rooms.length <= 1) return 0;
 
     const floors = [...new Set(rooms.map(r => r.floor))].sort((a, b) => a - b);
+    console.log('floors =>', floors);
+
     const minFloor = floors[0];
     const maxFloor = floors[floors.length - 1];
 
     let horizontalTravel = 0;
     floors.forEach(floor => {
       const floorRooms = rooms.filter(r => r.floor === floor).map(r => r.id % 100);
+      console.log('floorRooms =>', floorRooms);
+
       horizontalTravel += Math.max(...floorRooms) - Math.min(...floorRooms);
     });
 
@@ -45,7 +51,7 @@ export class HotelService {
 
   findOptimalRooms(numberOfRooms: number): Booking | null {
     const availableRooms = this.rooms.filter(room => !room.isBooked);
-    const roomsByFloor = new Map<number, Room[]>();
+    const roomsByFloor = new Map<number, Room[]>(); // { floor number, room data }
 
     availableRooms.forEach(room => {
       if (!roomsByFloor.has(room.floor)) roomsByFloor.set(room.floor, []);
@@ -55,7 +61,10 @@ export class HotelService {
     let bestBooking: Booking | null = null;
     let minTravelTime = Infinity;
 
+    console.log('values =>', roomsByFloor.entries());
+
     // Try to book all rooms on a single floor first
+    // sliding window approach
     for (const [floor, floorRooms] of roomsByFloor.entries()) {
       if (floorRooms.length >= numberOfRooms) {
         const sortedRooms = floorRooms.sort((a, b) => a.id - b.id);
